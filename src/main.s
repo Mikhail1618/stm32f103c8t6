@@ -27,109 +27,117 @@
 .equ STACKINIT, 0x20005000
 
 .text
-SP: .word STACKINIT
-RESET: .word main
-NMI_HANDLER: .word nmi_fault            
-HARD_FAULT: .word hard_fault            
-MEMORY_FAULT: .word memory_fault
-BUS_FAULT: .word bus_fault
-USAGE_FAULT: .word usage_fault + 1
+  SP:            .word STACKINIT
+  RESET:         .word main
+  NMI_HANDLER:   .word nmi_fault
+  HARD_FAULT:    .word hard_fault
+  MEMORY_FAULT:  .word memory_fault
+  BUS_FAULT:     .word bus_fault
+  USAGE_FAULT:   .word usage_fault + 1
+
 
 gpio_port_c_rcc_init:
-        push {r0, r1}
-        
-        ldr r1, =RCC_CFGR
-        ldr r0, =0x5000000
-          
-        str r0, [r1]                    
-        
-        mov r0, 0x10
-        
-        ldr r1, =RCC_APB2ENR
-        str r0, [r1]
-        
-        pop {r0, r1}
-        bx lr
+    @ сохраняем регистры в стеке
+    push {r0, r1}
+
+    ldr r1, =RCC_CFGR
+    ldr r0, =0x5000000
+
+    str r0, [r1]
+
+    mov r0, 0x10
+
+    ldr r1, =RCC_APB2ENR
+    str r0, [r1]
+
+    @ возвращаем значения из стека в регистры
+    pop {r0, r1}
+
+    @ R14 (LR) = адрес следующей команды в main
+    @ возвращаемся в вызвавшую функцию
+    bx lr
 
 
 led_init:
-        push {r0, r1}
-        push {lr}
+    push {r0, r1}
+    push {lr}
 
-        bl gpio_port_c_rcc_init             
-        pop {lr}
+    @ вызов функции
+    bl gpio_port_c_rcc_init
+    pop {lr}
 
-        ldr r1, =GPIOC_CRH
-        ldr r0, [r1]
+    ldr r1, =GPIOC_CRH
+    ldr r0, [r1]
 
-        and r0, r0, 0xFF0FFFFF                                                          
+    and r0, r0, 0xFF0FFFFF
 
-        orr r0, r0, 0x200000
-        str r0, [r1]
+    orr r0, r0, 0x200000
+    str r0, [r1]
 
-        pop {r0, r1}
+    pop {r0, r1}
 
-        bx lr
+    bx lr
 
 
 led_flash:
-        push {r0, r1}
+    push {r0, r1}
 
-        ldr r1, =GPIOC_ODR
-        ldr r0, [r1]
+    ldr r1, =GPIOC_ODR
+    ldr r0, [r1]
 
-        eor r0, 0x2000
+    eor r0, 0x2000
 
-        str r0, [r1]
+    str r0, [r1]
 
-        pop {r0, r1}
+    pop {r0, r1}
 
-        bx lr
+    bx lr
 
 
 main:
-        push {lr}
-        bl led_init
-        pop {lr}
-        
+    push {lr}
+    bl led_init
+    pop {lr}
+
 _main_loop:
-        push {lr}
-        bl led_flash
-        bl wait
-        pop {lr}
-        b _main_loop
-        
-        bx lr
+    push {lr}
+    bl led_flash
+    bl wait
+    pop {lr}
+    b _main_loop
+
+    bx lr
 
 wait:
-        push {r0}
-        
-        ldr r0, =0xFFFF0
+    push {r0}
+
+    ldr r0, =0xFFFF0
+
 _wait_loop:
-        subs r0, r0, 1
-        bne _wait_loop
-                
-        pop {r0}
-        bx lr
+    subs r0, r0, 1
+    bne _wait_loop
+
+    pop {r0}
+    bx lr
 
 nmi_fault:
-        bkpt
-        bx lr
+    bkpt
+    bx lr
         
 hard_fault:
-        bkpt
-        bx lr
+    bkpt
+    bx lr
 
 memory_fault:
-        bkpt
-        bx lr
+    bkpt
+    bx lr
 
 bus_fault:
-        bkpt
-        bx lr
+    bkpt
+    bx lr
 
 usage_fault:
-        bkpt
-        bx lr
-        
+    bkpt
+    bx lr
+
 .end
