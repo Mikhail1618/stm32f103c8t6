@@ -28,19 +28,19 @@
 
 .text
   SP:            .word STACKINIT
-  RESET:         .word main
-  NMI_HANDLER:   .word nmi_fault
-  HARD_FAULT:    .word hard_fault
-  MEMORY_FAULT:  .word memory_fault
-  BUS_FAULT:     .word bus_fault
+  RESET:         .word main + 1
+  NMI_HANDLER:   .word nmi_fault + 1
+  HARD_FAULT:    .word hard_fault + 1
+  MEMORY_FAULT:  .word memory_fault + 1
+  BUS_FAULT:     .word bus_fault + 1
   USAGE_FAULT:   .word usage_fault + 1
 
-
+ 
 gpio_port_c_rcc_init:
     @ сохраняем регистры в стеке
     push {r0, r1}
 
-    @ прочитать из адреса RCC_CFGR и записать в регистр r1
+    @ получить адрес константы RCC_CFGR и записать в регистр r1
     ldr r1, =RCC_CFGR
     ldr r0, =0x5000000
 
