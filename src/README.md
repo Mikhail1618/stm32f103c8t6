@@ -2,12 +2,12 @@
 
 ### Linux:
 
-#### build and load firmware
+#### build and load firmware:
 ```
 ./build.sh
 ```
 
-#### check info
+#### check info:
 ```
 arm-none-eabi-nm main.o
 ```
@@ -24,9 +24,13 @@ hexdump -C main.bin
 ```
 st-util
 ```
+
+##### start hardware debugger
 ```
 arm-none-eabi-gdb <main.elf>
 ```
+
+##### work in gdb
 ```
     symbol-file ./main.elf
     target extended-remote localhost:4242
