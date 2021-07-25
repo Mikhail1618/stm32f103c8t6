@@ -2,6 +2,12 @@
 
 ### Linux:
 
+#### build and load firmware
+```
+./build.sh
+```
+
+#### check info
 ```
 arm-none-eabi-nm main.o
 ```
@@ -14,6 +20,7 @@ hexdump -C main.bin
 
 #### debug:
 
+##### start debug server
 ```
 st-util
 ```
@@ -27,7 +34,7 @@ arm-none-eabi-gdb <main.elf>
 ```
     stepi, break, info reg, info breakpoints, list, continue
 
-#### example:
+#### example(gdb):
 ```
     break main
     break led_flash
