@@ -8,6 +8,7 @@ arm-none-eabi-nm main.o
 ```
 arm-none-eabi-size -A main.o
 ```
+```
 hexdump -C main.bin
 ```
 
