@@ -36,7 +36,11 @@ arm-none-eabi-gdb <main.elf>
     target extended-remote localhost:4242
     load ./main.elf
 ```
+
+##### other commands
+```
     stepi, break, info reg, info breakpoints, list, continue
+```
 
 #### example(gdb):
 ```
