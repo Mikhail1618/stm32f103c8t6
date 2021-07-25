@@ -35,6 +35,33 @@
   BUS_FAULT:     .word bus_fault + 1
   USAGE_FAULT:   .word usage_fault + 1
 
+
+main:
+    push {lr}
+    bl led_init
+    pop {lr}
+
+_main_loop:
+    push {lr}
+    bl led_flash
+    bl wait
+    pop {lr}
+    b _main_loop
+
+    bx lr
+
+wait:
+    push {r0}
+
+    ldr r0, =0xFFFF0
+
+_wait_loop:
+    subs r0, r0, 1
+    bne _wait_loop
+
+    pop {r0}
+    bx lr
+
  
 gpio_port_c_rcc_init:
     @ сохраняем регистры в стеке
@@ -96,32 +123,6 @@ led_flash:
 
     bx lr
 
-
-main:
-    push {lr}
-    bl led_init
-    pop {lr}
-
-_main_loop:
-    push {lr}
-    bl led_flash
-    bl wait
-    pop {lr}
-    b _main_loop
-
-    bx lr
-
-wait:
-    push {r0}
-
-    ldr r0, =0xFFFF0
-
-_wait_loop:
-    subs r0, r0, 1
-    bne _wait_loop
-
-    pop {r0}
-    bx lr
 
 nmi_fault:
     bkpt
