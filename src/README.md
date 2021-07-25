@@ -39,7 +39,7 @@ arm-none-eabi-gdb <main.elf>
 
 ##### other commands
 ```
-    stepi, break, info reg, info breakpoints, list, continue
+    stepi, break, hbreak <main.s>:<numstr>, del breake <num>, info reg, info breakpoints, list, continue, disassemble
 ```
 
 #### example(gdb):
