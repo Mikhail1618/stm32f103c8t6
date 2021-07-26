@@ -15,6 +15,9 @@ arm-none-eabi-nm main.o
 arm-none-eabi-size -A main.o
 ```
 ```
+arm-none-eabi-objdump -d main.elf
+```
+```
 hexdump -C main.bin
 ```
 
@@ -45,7 +48,7 @@ arm-none-eabi-gdb <main.elf>
 #### example(gdb):
 ```
     break main
-    break led_flash
+    hbreak main.s:24
     continue
     next
 ```
