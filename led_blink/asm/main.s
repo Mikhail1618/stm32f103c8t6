@@ -28,18 +28,6 @@ _main_loop:
 
     bx lr
 
-wait:
-    push {r0}
-
-    ldr r0, =0xFFFF0
-
-_wait_loop:
-    subs r0, r0, 1
-    bne _wait_loop
-
-    pop {r0}
-    bx lr
-
 
 nmi_fault:
     bkpt

@@ -8,5 +8,5 @@ SECTIONS
         .text :
         {
                 *(.text);        
-        } > FLASH               
+        } > FLASH
 }
