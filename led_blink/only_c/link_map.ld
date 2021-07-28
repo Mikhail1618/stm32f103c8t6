@@ -8,6 +8,8 @@ SECTIONS
 {
         .text :
         {
-                *(.text);        
+                CREATE_OBJECT_SYMBOLS
+                *(vectors);
+                *(.text);
         } > FLASH
 }
