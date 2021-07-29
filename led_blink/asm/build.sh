@@ -4,6 +4,8 @@ build="build"
 link="linker"
 src="src"
 
+mkdir $build $link $src
+
 arm-none-eabi-as -g -o $build/main.o $src/main.s
 arm-none-eabi-as -g -o $build/def_map.o $src/def_map.s
 arm-none-eabi-as -g -o $build/vec_tab.o $src/vec_tab.s
