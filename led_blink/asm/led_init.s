@@ -18,8 +18,8 @@ led_init:
     ldr r0, [r1]
 
     and r0, r0, 0xFF0FFFFF
-
     orr r0, r0, 0x200000
+
     str r0, [r1]
 
     pop {r0, r1}

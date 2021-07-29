@@ -19,13 +19,11 @@ void main()
 
 void Reset_Handler()
 {
-    main();
     return;
 }
 
 void NMI_Handler()
 {
-    main();
     return;
 }
 

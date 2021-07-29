@@ -19,8 +19,8 @@ gpio_port_c_rcc_init:
 
     @ загрузить в r0 число 0x10
     mov r0, 0x10
-
     ldr r1, =RCC_APB2ENR
+
     str r0, [r1]
 
     @ возвращаем значения из стека в регистры

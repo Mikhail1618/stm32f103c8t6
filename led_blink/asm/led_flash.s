@@ -17,7 +17,6 @@ led_flash:
     str r0, [r1]
 
     pop {r0, r1}
-
     bx lr
 
 .end
