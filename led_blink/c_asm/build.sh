@@ -1,17 +1,27 @@
 #!/bin/bash
 
-arm-none-eabi-as -g -o def_map.o def_map.s
-arm-none-eabi-as -g -o vec_tab.o vec_tab.s
-arm-none-eabi-as -g -o led_init.o led_init.s
-arm-none-eabi-as -g -o rcc_init.o rcc_init.s
-arm-none-eabi-as -g -o led_flash.o led_flash.s
-arm-none-eabi-as -g -o wait.o wait.s
+build="build"
+link="linker"
+src="src"
 
-arm-none-eabi-gcc --specs=nosys.specs -mcpu=cortex-m3 -mthumb -O0 -c -g -o main.o main.c
+mkdir $build $link $src
 
-arm-none-eabi-ld -o main.elf -T link_map.ld \
-  def_map.o vec_tab.o rcc_init.o led_init.o led_flash.o wait.o main.o
 
-arm-none-eabi-objcopy main.elf main.bin -O binary
+for module in def_map vec_tab led_init led_flash rcc_init wait
+do
+  arm-none-eabi-as -g -o $build/$module.o $src/$module.s
+done
 
-st-flash write ./main.bin 0x08000000
+
+arm-none-eabi-gcc --specs=nosys.specs -mcpu=cortex-m3 -mthumb \
+  -O0 -c -g -o $build/main.o $src/main.c
+
+
+arm-none-eabi-ld -o $build/main.elf -T $link/link_map.ld \
+  $build/def_map.o $build/vec_tab.o $build/rcc_init.o $build/led_init.o \
+  $build/led_flash.o $build/wait.o $build/main.o
+
+arm-none-eabi-objcopy $build/main.elf $build/main.bin -O binary
+
+
+st-flash write ./$build/main.bin 0x08000000
